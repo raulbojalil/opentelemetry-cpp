@@ -90,17 +90,17 @@ REM The following two configurations are built below:
 REM - nostd            - build with OpenTelemetry C++ Template library
 REM - stl              - build with Standard Template Library
 REM ##########################################################################################
-REM Build with nostd implementation.
+REM Build with nostd implementation (include OTLP HTTP exporter)
 REM ##########################################################################################
-set CONFIG=-DWITH_STL:BOOL=OFF %*
+set CONFIG=-DWITH_STL:BOOL=OFF -DBUILD_SHARED_LIBS=OFF -DWITH_OTL:BOOL=ON -DWITH_OTLP_HTTP:BOOL=ON -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>" %*
 set "OUTDIR=%ROOT%\out\%BUILDTOOLS_VERSION%\nostd"
 call :build_config
 
 REM ##########################################################################################
-REM Build with STL implementation. This option does not yield benefits for vs2015 build.
+REM Build with STL implementation. This option does not yield benefits for vs2015 build. (include OTLP HTTP exporter)
 REM ##########################################################################################
 if "%BUILDTOOLS_VERSION%" neq "vs2015" (
-  set CONFIG=-DWITH_STL:BOOL=ON %*
+  set CONFIG=-DWITH_STL:BOOL=ON -DBUILD_SHARED_LIBS=OFF -DWITH_OTL:BOOL=ON -DWITH_OTLP_HTTP:BOOL=ON -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded$<$<CONFIG:Debug>:Debug>" %*
   set "OUTDIR=%ROOT%\out\%BUILDTOOLS_VERSION%\stl"
   call :build_config
 )
